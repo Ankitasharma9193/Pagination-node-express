@@ -4,10 +4,10 @@ const getUser = async(req, res) => {
     try{
         console.log('heyyyyyy');
 
-        const page = req.query.page || 1;
+        const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const totalUsers = await UserSchema.countDocuments();
-        const totalPages = Math.ceil(totalUsers/limit);
+        const totalPages = totalUsers > limit ? Math.ceil(totalUsers/limit) : 1;
         const nextPage = page < totalPages ? page+1 : null;
         const createdUser = await UserSchema.find().skip((page - 1) * limit).limit(limit);
 
